@@ -9,7 +9,7 @@ import { app, server } from './lib/socket.io';
 import path from 'path';
 
 const PORT = process.env.PORT || 4000;
-const __dirname = path.resolve();
+const rootDir = path.resolve();
 
 // middlewares
 app.use(express.json({ limit: '10mb' }))
@@ -25,9 +25,9 @@ app.use('/api/auth', authRoutes)
 app.use('/api/message', messageRoutes)
 
 if(process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, "../frontend/dist")))
+    app.use(express.static(path.join(rootDir, "../frontend/dist")))
     app.get("*", (req, res) => {
-        res.sendFile(path.join(__dirname, "../frontend/dist/index.html"))
+        res.sendFile(path.join(rootDir, "../frontend/dist/index.html"))
     })
 }
 
