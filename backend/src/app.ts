@@ -9,7 +9,7 @@ import { app, server } from './lib/socket.io';
 import path from 'path';
 
 const PORT = process.env.PORT || 4000;
-const rootDir = path.resolve();
+const rootDir = path.resolve(__dirname);
 
 // middlewares
 app.use(express.json({ limit: '10mb' }))
@@ -20,16 +20,18 @@ app.use(cors({
     credentials: true
 }))
 
+
 // routes
 app.use('/api/auth', authRoutes)
 app.use('/api/message', messageRoutes)
 
 if(process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(rootDir, "../frontend/dist")))
-    app.get("*", (req, res) => {
-        res.sendFile(path.join(rootDir, "../frontend/dist/index.html"))
-    })
+   app.use(express.static(path.join(rootDir, "../../frontend/dist")));
+   app.get(/.*/, (req, res) => {
+     res.sendFile(path.join(rootDir, "../../frontend/dist/index.html"));
+   });
 }
+
 
 // start server
 server.listen(PORT, () => {
